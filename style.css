@@ -1,0 +1,324 @@
+:root {
+    --bg-primary: rgb(18, 15, 14);
+    --font-primary: rgb(229, 231, 235);
+    --work-color: rgb(56, 189, 248);
+    --rest-color: rgb(34, 197, 94);
+    --start-color: rgb(61, 197, 34);
+    --stop-color: rgb(250, 17, 17);
+    --reset-color: rgb(249, 115, 22)
+}
+
+body {
+    background-color: var(--bg-primary);
+    margin: 0;
+}
+
+.screen {
+    display: none;
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    background-color: var(--bg-primary);
+    color: var(--font-primary);
+    margin: 0;
+}
+
+.active {
+    display: flex;
+}
+
+#container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+
+    width: 100%;
+    height: 80vh;
+    margin-top: 10vh;
+}
+
+#settings {
+    position: absolute;
+    top: 30px;
+    right: 30px;
+    font-size: 40px;
+    border: none;
+    background-color: transparent;
+    color: var(--font-primary);
+    cursor: pointer;
+}
+
+#state {
+    font-size: 50px;
+    font-weight: 600;
+    margin-bottom: -20px;
+    padding: 0;
+    font-family: 'Orbitron', sans-serif;
+}
+
+#time-left {
+    font-size: 140px;
+    font-weight: 600;
+    margin: 0;
+    padding: 0;
+    font-family: 'Orbitron', sans-serif;
+}
+
+#work-bar {
+    width: 88%;
+    height: 10px;
+    background-color: var(--font-primary);
+    border-radius: 5px;
+    margin-top: -80px;
+    padding: 0;
+}
+
+#work-bar-fill {
+    width: 0;
+    height: 100%;
+    border-radius: 5px;
+    margin: 0;
+}
+
+.work-bg {
+    background-color: var(--work-color);
+}
+
+.work-font {
+    color: var(--work-color);
+}
+
+.rest-bg {
+    background-color: var(--rest-color);
+    color: var(--rest-color);
+}
+
+.rest-font {
+    color: var(--rest-color);
+}
+
+#rounds {
+    font-size: 50px;
+    font-weight: 600;
+    margin: 0;
+    padding: 0;
+    font-family: 'Orbitron', sans-serif;
+}
+
+#button-box {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 75%;
+    margin-top: 20px;
+}
+
+.control-btn {
+    background-color: transparent;
+    font-size: 28px;
+    cursor: pointer;
+    width: 40%;
+    aspect-ratio: 1/1;
+    border-radius: 50%;
+    font-family: 'Orbitron', sans-serif;
+    font-weight: 600;
+}
+
+.start {
+    border: 5px solid var(--start-color);
+    color: var(--start-color);
+}
+
+.stop {
+    border: 5px solid var(--stop-color);
+    color: var(--stop-color);
+}
+
+.reset {
+    border: 5px solid var(--reset-color);
+    color: var(--reset-color);
+}
+
+#back {
+    position: absolute;
+    top: 30px;
+    left: 30px;
+    font-size: 40px;
+    border: none;
+    background-color: transparent;
+    color: var(--font-primary);
+    cursor: pointer;
+}
+
+#settings-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    width: 100%;
+    height: 80vh;
+    margin-top: 10vh;
+}
+
+#settings-title {
+    font-size: 50px;
+    font-weight: 600;
+    margin: 0;
+    padding: 0;
+    font-family: 'Orbitron', sans-serif;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+    width: 75%;
+    height: 60vh;
+    margin-top: 50px;
+    margin-bottom: 30px;
+}
+
+#settings-content {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: space-around;
+    width: 75%;
+    height: 60vh;
+    margin-top: 50px;
+    margin-bottom: 30px;
+}
+
+#rounds-settings {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    width: 80%;
+}
+
+#rounds-settings-title {
+    font-size: 30px;
+    font-weight: 600;
+    margin: 0;
+    padding: 0;
+    font-family: 'Orbitron', sans-serif;
+    color: var(--font-primary);
+}
+
+#rounds-number {
+    font-size: 30px;
+    font-weight: 600;
+    margin: 0;
+    padding: 0;
+    font-family: 'Orbitron', sans-serif;
+    color: var(--font-primary);
+    background-color: transparent;
+    border: none;
+    border-bottom: 2px solid var(--font-primary);
+    width: 50px;
+    text-align: center;
+    cursor: pointer;
+    outline: none;
+    margin-left: 10px
+}
+
+#work-settings {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    width: 90%;
+}
+
+#work-settings-title {
+    font-size: 30px;
+    font-weight: 600;
+    margin: 0;
+    padding: 0;
+    font-family: 'Orbitron', sans-serif;
+    color: var(--work-color);
+}
+
+#work-number-minutes, #work-number-seconds {
+    font-size: 30px;
+    font-weight: 600;
+    margin: 0;
+    padding: 0;
+    font-family: 'Orbitron', sans-serif;
+    color: var(--work-color);
+    background-color: transparent;
+    border: none;
+    border-bottom: 2px solid var(--work-color);
+    width: 50px;
+    text-align: center;
+    cursor: pointer;
+    outline: none;
+    margin-left: 10px
+}
+
+.time-text {
+    font-size: 16px;
+    font-weight: 600;
+    margin: 0;
+    padding: 0;
+    font-family: 'Orbitron', sans-serif;
+    color: var(--font-primary);
+}
+
+#rest-settings {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    width: 90%;
+}
+
+#rest-settings-title {
+    font-size: 30px;
+    font-weight: 600;
+    margin: 0;
+    padding: 0;
+    font-family: 'Orbitron', sans-serif;
+    color: var(--rest-color);
+}
+
+#rest-number-minutes, #rest-number-seconds {
+    font-size: 30px;
+    font-weight: 600;
+    margin: 0;
+    padding: 0;
+    font-family: 'Orbitron', sans-serif;
+    color: var(--rest-color);
+    background-color: transparent;
+    border: none;
+    border-bottom: 2px solid var(--rest-color);
+    width: 50px;
+    text-align: center;
+    cursor: pointer;
+    outline: none;
+    margin-left: 10px
+}
+
+#submit-box {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    margin-top: 50px;
+}
+
+#submit-btn {
+    font-size: 40px;
+    font-weight: 600;
+    margin: 0;
+    padding: 0;
+    font-family: 'Orbitron', sans-serif;
+    color: var(--font-primary);
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+}

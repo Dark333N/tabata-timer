@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Timer</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Timer Screen -->
+     <div id="timer-screen" class="screen active">
+        <button id="settings">☰</button>
+        <div id="container">
+            <div id="state" class="work-font"></div>
+            <div id="time-left"></div>
+            <div id="work-bar">
+                <div id="work-bar-fill"></div>
+            </div>
+            <div id="rounds"></div>
+            <div id="button-box">
+                <button id="start-stop-btn" class="control-btn start"></button>
+                <button id="reset-btn" class="control-btn reset">Reset</button>
+            </div>
+        </div>
+     </div>
+
+     <!-- Timer Settings -->
+      <div id="settings-screen" class="screen">
+        <button id="back">←</button>
+        <div id="settings-container">
+            <div id="settings-title">Settings</div>
+            <form id="settings-form">
+                <div id="settings-content">
+                    <div id="rounds-settings">
+                        <div id="rounds-settings-title">Rounds:</div>
+                        <input type="number" id="rounds-number" inputmode="numeric" min="1" max="1000" value="6">
+                    </div>
+                    <div id="work-settings">
+                        <div id="work-settings-title">Work:</div>
+                        <input type="number" id="work-number-minutes" inputmode="numeric" min="0" max="59" value="0">
+                        <span class="time-text">min</span>
+                        <input type="number" id="work-number-seconds" inputmode="numeric" min="0" max="59" value="40">
+                        <span class="time-text">sec</span>
+                    </div>
+                    <div id="rest-settings">
+                        <div id="rest-settings-title">Rest:</div>
+                        <input type="number" id="rest-number-minutes" inputmode="numeric" min="0" max="59" value="0">
+                        <span class="time-text">min</span>
+                        <input type="number" id="rest-number-seconds" inputmode="numeric" min="0" max="59" value="20">
+                        <span class="time-text">sec</span>
+                    </div>
+                </div>
+                <div id="submit-box">
+                    <button id="submit-btn">Save</button>
+                </div>
+            </form>
+        </div>
+      </div>
+    <script src="script.js"></script>
+</body>
+</html>
