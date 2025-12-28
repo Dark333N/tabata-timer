@@ -6,11 +6,11 @@ let rest_time = 20;
 
 const countdown_audio = new Audio("sound/countdown.mp3");
 const long_beep = new Audio("sound/long_beep.mp3");
-long_beep.volume = 0;
-long_beep.muted = true;
 const short_beep1 = new Audio("sound/short_beep.mp3");
 const short_beep2 = new Audio("sound/short_beep.mp3");
 const short_beep3 = new Audio("sound/short_beep.mp3");
+
+let audioCtx;
 
 let is_running = false;
 let current_round = 1;
@@ -67,21 +67,21 @@ run_timer = () => {
 }
 
 
-let audioUnlocked = false;
-
 function unlockAudio() {
     if (audioUnlocked) return;
 
-    long_beep.muted = true;
-    long_beep.play().then(() => {
-        long_beep.pause();
-        long_beep.currentTime = 0;
-        long_beep.volume = 1;
-        long_beep.muted = false;
-        audioUnlocked = true;
-    });
-}
+    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 
+    // create 1-frame silent buffer
+    const buffer = audioCtx.createBuffer(1, 1, 22050);
+    const source = audioCtx.createBufferSource();
+
+    source.buffer = buffer;
+    source.connect(audioCtx.destination);
+    source.start(0);
+
+    audioUnlocked = true;
+}
 
 start = () => {
     unlockAudio();
@@ -227,5 +227,6 @@ form.addEventListener("submit", (event) => {
     reset();
     render_UI();
 });
+
 
 
