@@ -4,14 +4,6 @@ let rounds = 6;
 let work_time = 40;
 let rest_time = 20;
 
-const countdown_audio = new Audio("sound/countdown.mp3");
-const long_beep = new Audio("sound/long_beep.mp3");
-const short_beep1 = new Audio("sound/short_beep.mp3");
-const short_beep2 = new Audio("sound/short_beep.mp3");
-const short_beep3 = new Audio("sound/short_beep.mp3");
-
-let audioCtx = null;
-
 let is_running = false;
 let current_round = 1;
 let time = work_time;
@@ -28,11 +20,11 @@ run_timer = () => {
         if (is_running) {
             if (time == 1) {
                 if (!(state == "work" && current_round == rounds)) {
-                    playSound(long_beep);
+                    playBeep("long");
                 } else {
-                    playSound(short_beep1); 
-                    setTimeout(() => playSound(short_beep2), 200); 
-                    setTimeout(() => playSound(short_beep3), 400);
+                    playBeep("short"); 
+                    setTimeout(() => playBeep("short"), 200); 
+                    setTimeout(() => playBeep("short"), 400);
                 }
             }
             if (time == 0) {
@@ -58,90 +50,72 @@ run_timer = () => {
     }
 }
 
-let audioUnlocked = false;
+// --- Web Audio engine ---
 
-function unlockAudio() {
-    // Create context once
+let audioCtx = null;
+let audioBuffers = {};
+let audioReady = false;
+let audioLoading = false;
+
+// Create / resume AudioContext
+function ensureAudioContext() {
     if (!audioCtx) {
         audioCtx = new (window.AudioContext || window.webkitAudioContext)();
     }
-
-    // If already unlocked, just resume if needed
-    if (audioUnlocked) {
-        if (audioCtx.state === "suspended") {
-            audioCtx.resume();
-        }
-        return;
-    }
-
-    // Create a 1-frame silent buffer to unlock audio
-    const buffer = audioCtx.createBuffer(1, 1, 22050);
-    const source = audioCtx.createBufferSource();
-    source.buffer = buffer;
-    source.connect(audioCtx.destination);
-
-    try {
-        source.start(0);
-        audioUnlocked = true;
-    } catch (e) {
-        // iOS sometimes throws if not in a gesture
-        console.log("Audio unlock failed, will retry on next gesture");
-    }
-}
-
-function unlockAllSounds() {
-    const sounds = [
-        countdown_audio,
-        long_beep,
-        short_beep1,
-        short_beep2,
-        short_beep3
-    ];
-
-    sounds.forEach(sound => {
-        sound.volume = 0.001; // barely audible but not muted
-        sound.currentTime = 0;
-
-        sound.play().then(() => {
-            sound.pause();
-            sound.currentTime = 0;
-            sound.volume = 1.0;
-        }).catch(() => {
-            if (audioCtx && audioCtx.state === "suspended") {
-                audioCtx.resume().then(() => {
-                    sound.play().then(() => {
-                        sound.pause();
-                        sound.currentTime = 0;
-                        sound.volume = 1.0;
-                    });
-                });
-            }
-        });
-    });
-}
-
-
-
-function playSound(audio) {
-    if (!audioCtx) return;
-
     if (audioCtx.state === "suspended") {
         audioCtx.resume();
     }
+}
 
-    audio.currentTime = 0;
+// Load and decode a single sound file into a buffer
+async function loadSound(name, url) {
+    const response = await fetch(url);
+    const arrayBuffer = await response.arrayBuffer();
+    const audioBuffer = await audioCtx.decodeAudioData(arrayBuffer);
+    audioBuffers[name] = audioBuffer;
+}
 
-    audio.play().catch(() => {
-        // iOS sometimes needs a resume inside a gesture
-        audioCtx.resume().then(() => audio.play());
-    });
+// Load all sounds once
+async function initAudioBuffers() {
+    if (audioReady || audioLoading) return;
+    audioLoading = true;
+
+    ensureAudioContext();
+
+    try {
+        await Promise.all([
+            loadSound("countdown", "sound/countdown.mp3"),
+            loadSound("long", "sound/long_beep.mp3"),
+            loadSound("short", "sound/short_beep.mp3")
+        ]);
+        audioReady = true;
+    } catch (e) {
+        console.error("Error loading audio buffers:", e);
+    } finally {
+        audioLoading = false;
+    }
+}
+
+// Play a sound by name ("countdown", "long", "short")
+function playBeep(name) {
+    if (!audioReady || !audioCtx) return;
+    ensureAudioContext();
+
+    const buffer = audioBuffers[name];
+    if (!buffer) return;
+
+    const source = audioCtx.createBufferSource();
+    source.buffer = buffer;
+    source.connect(audioCtx.destination);
+    source.start(0);
 }
 
 
-start = () => {
-    if (!audioUnlocked) { 
-        unlockAudio(); 
-        unlockAllSounds(); 
+
+start = async () => {
+    if (!audioReady) { 
+        ensureAudioContext(); 
+        await initAudioBuffers(); 
     }
     if(current_round == 1 && time == work_time) {
         is_countdown = true;
@@ -285,6 +259,7 @@ form.addEventListener("submit", (event) => {
     reset();
     render_UI();
 });
+
 
 
 
