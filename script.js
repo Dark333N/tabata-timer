@@ -54,7 +54,7 @@ start = () => {
         setTimeout(() => {
             is_running = true;
             intervalID = setInterval(run_timer, 1000);
-        }, 2000);
+        }, 2500);
     } else {
         is_running = true;
         intervalID = setInterval(run_timer, 1000);
@@ -177,3 +177,4 @@ form.addEventListener("submit", (event) => {
     render_UI();
 
 });
+
