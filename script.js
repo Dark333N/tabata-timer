@@ -87,9 +87,8 @@ function unlockAudio() {
 start = () => {
     unlockAudio();
 
-    is_countdown = true;
-
     if(current_round == 1 && time == work_time) {
+        is_countdown = true;
         countdown_audio.play();
 
         setTimeout(() => {
@@ -230,6 +229,7 @@ form.addEventListener("submit", (event) => {
     reset();
     render_UI();
 });
+
 
 
 
