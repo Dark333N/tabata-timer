@@ -52,11 +52,13 @@ let audioUnlocked = false;
 function unlockAudio() {
     if (audioUnlocked) return;
 
-    long_beep.volume = 0;
+    long_beep.muted = true;
+    long_beep.currentTime = 0;
+
     long_beep.play().then(() => {
         long_beep.pause();
         long_beep.currentTime = 0;
-        long_beep.volume = 1;
+        long_beep.muted = false;
         audioUnlocked = true;
     });
 }
@@ -192,6 +194,7 @@ form.addEventListener("submit", (event) => {
     render_UI();
 
 });
+
 
 
 
