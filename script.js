@@ -66,6 +66,7 @@ run_timer = () => {
     }
 }
 
+let audioUnlocked = false;
 
 function unlockAudio() {
     if (audioUnlocked) return;
@@ -227,6 +228,7 @@ form.addEventListener("submit", (event) => {
     reset();
     render_UI();
 });
+
 
 
 
