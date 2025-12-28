@@ -47,18 +47,22 @@ run_timer = () => {
 }
 
 
-unlock_audio = () => {
+let audioUnlocked = false;
+
+function unlockAudio() {
+    if (audioUnlocked) return;
+
     long_beep.volume = 0;
     long_beep.play().then(() => {
         long_beep.pause();
         long_beep.currentTime = 0;
         long_beep.volume = 1;
+        audioUnlocked = true;
     });
 }
 
-
 start = () => {
-    unlock_audio();
+    unlockAudio();
     if(current_round == 1 && time == work_time) {
         countdown_audio.play();
 
@@ -188,5 +192,6 @@ form.addEventListener("submit", (event) => {
     render_UI();
 
 });
+
 
 
