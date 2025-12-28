@@ -18,7 +18,7 @@ let intervalID;
 run_timer = () => {
     if (current_round <= rounds) {
         if (is_running) {
-            if (time == 1) {
+            if (time == 2) {
                 if (!(state == "work" && current_round == rounds)) {
                     playBeep("long");
                 } else {
@@ -27,7 +27,7 @@ run_timer = () => {
                     setTimeout(() => playBeep("short"), 400);
                 }
             }
-            if (time == 0) {
+            if (time == 1) {
                 if (state == "work") {
                     current_round++;
                     state = "rest";
@@ -125,7 +125,7 @@ start = async () => {
             is_countdown = false;
             is_running = true;
             intervalID = setInterval(run_timer, 1000);
-        }, 2000);
+        }, 3000);
     } else {
         is_running = true;
         intervalID = setInterval(run_timer, 1000);
@@ -256,9 +256,15 @@ form.addEventListener("submit", (event) => {
     const restMin = document.getElementById("rest-number-minutes").value;
     const restSec = document.getElementById("rest-number-seconds").value;
     rest_time = parseInt(restMin) * 60 + parseInt(restSec);
+
+    document.getElementById("timer-screen").classList.add("active");
+    document.getElementById("settings-screen").classList.remove("active");
+
+    
     reset();
     render_UI();
 });
+
 
 
 
