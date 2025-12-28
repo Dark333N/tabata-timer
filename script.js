@@ -93,6 +93,38 @@ function unlockAudio() {
     }
 }
 
+function unlockAllSounds() {
+    const sounds = [
+        countdown_audio,
+        long_beep,
+        short_beep1,
+        short_beep2,
+        short_beep3
+    ];
+
+    sounds.forEach(sound => {
+        sound.volume = 0.001; // barely audible but not muted
+        sound.currentTime = 0;
+
+        sound.play().then(() => {
+            sound.pause();
+            sound.currentTime = 0;
+            sound.volume = 1.0;
+        }).catch(() => {
+            if (audioCtx && audioCtx.state === "suspended") {
+                audioCtx.resume().then(() => {
+                    sound.play().then(() => {
+                        sound.pause();
+                        sound.currentTime = 0;
+                        sound.volume = 1.0;
+                    });
+                });
+            }
+        });
+    });
+}
+
+
 
 function playSound(audio) {
     if (!audioCtx) return;
@@ -112,6 +144,7 @@ function playSound(audio) {
 
 start = () => {
     unlockAudio();
+    unlockAllSounds();
 
     if(current_round == 1 && time == work_time) {
         is_countdown = true;
@@ -255,6 +288,7 @@ form.addEventListener("submit", (event) => {
     reset();
     render_UI();
 });
+
 
 
 
