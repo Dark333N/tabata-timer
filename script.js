@@ -10,7 +10,7 @@ const short_beep1 = new Audio("sound/short_beep.mp3");
 const short_beep2 = new Audio("sound/short_beep.mp3");
 const short_beep3 = new Audio("sound/short_beep.mp3");
 
-let audioCtx;
+let audioCtx = null;
 
 let is_running = false;
 let current_round = 1;
@@ -28,17 +28,13 @@ run_timer = () => {
         if (is_running) {
             if (time == 1) {
                 if (!(state == "work" && current_round == rounds)) {
-                    long_beep.currentTime = 0;
-                    long_beep.play();
+                    playSound(long_beep);
                 } else {
-                    short_beep1.currentTime = 0;
-                    short_beep1.play();
+                    playSound(short_beep1);
                     short_beep1.onended = () => {
-                        short_beep2.currentTime = 0;
-                        short_beep2.play();
+                        playSound(short_beep2);
                         short_beep2.onended = () => {
-                            short_beep3.currentTime = 0;
-                            short_beep3.play();
+                            playSound(short_beep3);
                         }
                     }
                 }
@@ -69,27 +65,57 @@ run_timer = () => {
 let audioUnlocked = false;
 
 function unlockAudio() {
-    if (audioUnlocked) return;
+    // Create context once
+    if (!audioCtx) {
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    }
 
-    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    // If already unlocked, just resume if needed
+    if (audioUnlocked) {
+        if (audioCtx.state === "suspended") {
+            audioCtx.resume();
+        }
+        return;
+    }
 
-    // create 1-frame silent buffer
+    // Create a 1-frame silent buffer to unlock audio
     const buffer = audioCtx.createBuffer(1, 1, 22050);
     const source = audioCtx.createBufferSource();
-
     source.buffer = buffer;
     source.connect(audioCtx.destination);
-    source.start(0);
 
-    audioUnlocked = true;
+    try {
+        source.start(0);
+        audioUnlocked = true;
+    } catch (e) {
+        // iOS sometimes throws if not in a gesture
+        console.log("Audio unlock failed, will retry on next gesture");
+    }
 }
+
+
+function playSound(audio) {
+    if (!audioCtx) return;
+
+    if (audioCtx.state === "suspended") {
+        audioCtx.resume();
+    }
+
+    audio.currentTime = 0;
+
+    audio.play().catch(() => {
+        // iOS sometimes needs a resume inside a gesture
+        audioCtx.resume().then(() => audio.play());
+    });
+}
+
 
 start = () => {
     unlockAudio();
 
     if(current_round == 1 && time == work_time) {
         is_countdown = true;
-        countdown_audio.play();
+        playSound(countdown_audio);
 
         setTimeout(() => {
             is_countdown = false;
@@ -229,6 +255,7 @@ form.addEventListener("submit", (event) => {
     reset();
     render_UI();
 });
+
 
 
 
