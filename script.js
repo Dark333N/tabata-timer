@@ -26,7 +26,7 @@ run_timer = () => {
                         playBeep("short"); 
                         setTimeout(() => playBeep("short"), 200); 
                         setTimeout(() => playBeep("short"), 400);
-                    }, 1000)
+                    }, 400)
                 }
             }
             if (time == 1) {
@@ -266,4 +266,5 @@ form.addEventListener("submit", (event) => {
     reset();
     render_UI();
 });
+
 
