@@ -4,18 +4,17 @@ let rounds = 6;
 let work_time = 40;
 let rest_time = 20;
 
-const countdown_audio = new Audio("sound/countdown.mp3");
-const long_beep = new Audio("sound/long_beep.mp3");
-long_beep.volume = 0;
-
-const short_beep1 = new Audio("sound/short_beep.mp3");
-const short_beep2 = new Audio("sound/short_beep.mp3");
-const short_beep3 = new Audio("sound/short_beep.mp3");
+const countdown_audio = new Audio("/sound/countdown.mp3");
+const long_beep = new Audio("/sound/long_beep.mp3");
+const short_beep1 = new Audio("/sound/short_beep.mp3");
+const short_beep2 = new Audio("/sound/short_beep.mp3");
+const short_beep3 = new Audio("/sound/short_beep.mp3");
 
 let is_running = false;
 let current_round = 1;
 let time = work_time;
 let state = "work";
+let is_countdown = false;
 
 
 let intervalID;
@@ -84,10 +83,13 @@ function unlockAudio() {
 start = () => {
     unlockAudio();
 
+    is_countdown = true;
+
     if(current_round == 1 && time == work_time) {
         countdown_audio.play();
 
         setTimeout(() => {
+            is_countdown = false;
             is_running = true;
             intervalID = setInterval(run_timer, 1000);
         }, 2000);
@@ -166,6 +168,16 @@ render_UI = () => {
         UI_start_stop_btn.classList.add("start");
         UI_start_stop_btn.innerHTML = "Start";
     }
+
+    if (is_countdown) {
+        UI_start_stop_btn.disabled = true;
+        document.getElementById("reset-btn").disabled = true;
+        document.getElementById("settings").disabled = true;
+    } else {
+        UI_start_stop_btn.disabled = false;
+        document.getElementById("reset-btn").disabled = false;
+        document.getElementById("settings").disabled = false;
+    }
 }
 
 render_UI();
@@ -212,4 +224,3 @@ form.addEventListener("submit", (event) => {
     reset();
     render_UI();
 });
-
