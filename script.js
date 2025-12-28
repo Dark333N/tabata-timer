@@ -7,6 +7,7 @@ let rest_time = 20;
 const countdown_audio = new Audio("sound/countdown.mp3");
 const long_beep = new Audio("sound/long_beep.mp3");
 long_beep.volume = 0;
+
 const short_beep1 = new Audio("sound/short_beep.mp3");
 const short_beep2 = new Audio("sound/short_beep.mp3");
 const short_beep3 = new Audio("sound/short_beep.mp3");
@@ -211,3 +212,4 @@ form.addEventListener("submit", (event) => {
     reset();
     render_UI();
 });
+
