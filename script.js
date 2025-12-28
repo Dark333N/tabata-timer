@@ -106,12 +106,14 @@ start = () => {
 
 stop = () => {
     is_running = false;
+    is_countdown = false;
     clearInterval(intervalID);
 }
 
 
 reset = () => {
     is_running = false;
+    is_countdown = false;
     clearInterval(intervalID);
     current_round = 1;
     time = work_time;
@@ -228,6 +230,7 @@ form.addEventListener("submit", (event) => {
     reset();
     render_UI();
 });
+
 
 
 
