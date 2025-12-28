@@ -7,6 +7,8 @@ let rest_time = 20;
 const countdown_audio = new Audio("sound/countdown.mp3");
 const long_beep = new Audio("sound/long_beep.mp3");
 
+long_beep.muted = true;
+
 let is_running = false;
 let current_round = 1;
 let time = work_time;
@@ -21,6 +23,7 @@ run_timer = () => {
     if (current_round <= rounds) {
         if (is_running) {
             if (time == 1) {
+                long_beep.currentTime = 0;
                 long_beep.play();
             }
             if (time == 0) {
@@ -194,6 +197,7 @@ form.addEventListener("submit", (event) => {
     render_UI();
 
 });
+
 
 
 
