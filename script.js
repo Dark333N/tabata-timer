@@ -30,13 +30,9 @@ run_timer = () => {
                 if (!(state == "work" && current_round == rounds)) {
                     playSound(long_beep);
                 } else {
-                    playSound(short_beep1);
-                    short_beep1.onended = () => {
-                        playSound(short_beep2);
-                        short_beep2.onended = () => {
-                            playSound(short_beep3);
-                        }
-                    }
+                    playSound(short_beep1); 
+                    setTimeout(() => playSound(short_beep2), 200); 
+                    setTimeout(() => playSound(short_beep3), 400);
                 }
             }
             if (time == 0) {
@@ -143,9 +139,10 @@ function playSound(audio) {
 
 
 start = () => {
-    unlockAudio();
-    unlockAllSounds();
-
+    if (!audioUnlocked) { 
+        unlockAudio(); 
+        unlockAllSounds(); 
+    }
     if(current_round == 1 && time == work_time) {
         is_countdown = true;
         playSound(countdown_audio);
@@ -288,6 +285,7 @@ form.addEventListener("submit", (event) => {
     reset();
     render_UI();
 });
+
 
 
 
