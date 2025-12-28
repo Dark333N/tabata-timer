@@ -41,7 +41,7 @@ run_timer = () => {
             }
             render_UI();
         }
-        if (current_round == rounds && time == 0 && state == "work") {
+        if (current_round == rounds && time == 1 && state == "work") {
             is_running = false;
             clearInterval(intervalID);
             reset();
@@ -264,6 +264,7 @@ form.addEventListener("submit", (event) => {
     reset();
     render_UI();
 });
+
 
 
 
