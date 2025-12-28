@@ -4,8 +4,8 @@ let rounds = 6;
 let work_time = 40;
 let rest_time = 20;
 
-const countdown_audio = new Audio("/sound/countdown.mp3");
-const long_beep = new Audio("/sound/long_beep.mp3");
+const countdown_audio = new Audio("sound/countdown.mp3");
+const long_beep = new Audio("sound/long_beep.mp3");
 
 let is_running = false;
 let current_round = 1;
@@ -175,4 +175,5 @@ form.addEventListener("submit", (event) => {
     rest_time = parseInt(restMin) * 60 + parseInt(restSec);
     reset();
     render_UI();
+
 });
