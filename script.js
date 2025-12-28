@@ -21,11 +21,7 @@ run_timer = () => {
             if (time == 2) {
                 if (!(state == "work" && current_round == rounds)) {
                     playBeep("long");
-                } else {
-                    playBeep("short"); 
-                    setTimeout(() => playBeep("short"), 200); 
-                    setTimeout(() => playBeep("short"), 400);
-                }
+                } 
             }
             if (time == 1) {
                 if (state == "work") {
@@ -36,15 +32,20 @@ run_timer = () => {
                     state = "work";
                     time = work_time;
                 }
+
+                if (state == "work" && current_round == rounds) {
+                    playBeep("short"); 
+                    setTimeout(() => playBeep("short"), 200); 
+                    setTimeout(() => playBeep("short"), 400);
+
+                    is_running = false;
+                    clearInterval(intervalID);
+                    reset();
+                    render_UI();
+                }
             } else {
                 time--;
             }
-            render_UI();
-        }
-        if (current_round == rounds && time == 1 && state == "work") {
-            is_running = false;
-            clearInterval(intervalID);
-            reset();
             render_UI();
         }
     }
@@ -264,6 +265,7 @@ form.addEventListener("submit", (event) => {
     reset();
     render_UI();
 });
+
 
 
 
