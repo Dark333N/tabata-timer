@@ -6,8 +6,10 @@ let rest_time = 20;
 
 const countdown_audio = new Audio("sound/countdown.mp3");
 const long_beep = new Audio("sound/long_beep.mp3");
-
-long_beep.muted = true;
+long_beep.volume = 0;
+const short_beep1 = new Audio("sound/short_beep.mp3");
+const short_beep2 = new Audio("sound/short_beep.mp3");
+const short_beep3 = new Audio("sound/short_beep.mp3");
 
 let is_running = false;
 let current_round = 1;
@@ -23,8 +25,21 @@ run_timer = () => {
     if (current_round <= rounds) {
         if (is_running) {
             if (time == 1) {
-                long_beep.currentTime = 0;
-                long_beep.play();
+                if (!(state == "work" && current_round == rounds)) {
+                    long_beep.currentTime = 0;
+                    long_beep.play();
+                } else {
+                    short_beep1.currentTime = 0;
+                    short_beep1.play();
+                    short_beep1.onended = () => {
+                        short_beep2.currentTime = 0;
+                        short_beep2.play();
+                        short_beep2.onended = () => {
+                            short_beep3.currentTime = 0;
+                            short_beep3.play();
+                        }
+                    }
+                }
             }
             if (time == 0) {
                 if (state == "work") {
@@ -55,26 +70,26 @@ let audioUnlocked = false;
 function unlockAudio() {
     if (audioUnlocked) return;
 
-    long_beep.muted = true;
-    long_beep.currentTime = 0;
-
+    long_beep.volume = 0;
     long_beep.play().then(() => {
         long_beep.pause();
         long_beep.currentTime = 0;
-        long_beep.muted = false;
+        long_beep.volume = 1;
         audioUnlocked = true;
     });
 }
 
+
 start = () => {
     unlockAudio();
+
     if(current_round == 1 && time == work_time) {
         countdown_audio.play();
 
         setTimeout(() => {
             is_running = true;
             intervalID = setInterval(run_timer, 1000);
-        }, 2500);
+        }, 2000);
     } else {
         is_running = true;
         intervalID = setInterval(run_timer, 1000);
@@ -195,10 +210,4 @@ form.addEventListener("submit", (event) => {
     rest_time = parseInt(restMin) * 60 + parseInt(restSec);
     reset();
     render_UI();
-
 });
-
-
-
-
-
