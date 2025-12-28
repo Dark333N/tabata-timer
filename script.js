@@ -1,4 +1,3 @@
-@@ -1,278 +1,279 @@
 /* Variables */
 
 let rounds = 6;
@@ -267,3 +266,4 @@ form.addEventListener("submit", (event) => {
     reset();
     render_UI();
 });
+
