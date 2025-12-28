@@ -119,7 +119,7 @@ start = async () => {
     }
     if(current_round == 1 && time == work_time) {
         is_countdown = true;
-        playSound(countdown_audio);
+        playBeep("countdown");
 
         setTimeout(() => {
             is_countdown = false;
@@ -259,6 +259,7 @@ form.addEventListener("submit", (event) => {
     reset();
     render_UI();
 });
+
 
 
 
